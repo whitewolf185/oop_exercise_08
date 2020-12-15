@@ -1,0 +1,6 @@
+/cmake-*/
+/.idea/
+*test*
+
+*.doc*
+!report.doc
