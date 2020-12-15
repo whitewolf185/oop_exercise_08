@@ -28,47 +28,48 @@
 */
 
 #include "document.h"
-
+#include <exception>
+#include <functional>
 //нужно, чтобы было 2 одинаковых типа
 #define yourTYPE double , double
+#define figTYPE <double>
+
+auto print_lam = [](Figures figTYPE* fig){
+    std::cout << ;
+};
+
 
 int main(int argc, char* argv[]) {
+
+    std::vector<std::function<void()>> processing(2);
+
+    TDocument<yourTYPE> doc;
+
+
+    auto save_lam = [&](){
+
+    };
+
     std::ofstream fout;
     std::ifstream fin;
 
-    TDocument<yourTYPE> doc;
     std::string s;
+
+    int size;
+    try{
+        size = std::stoi(argv[1]);
+        if (size < 0){
+            throw std::invalid_argument("You entered wrong size");
+        }
+    }
+    catch(std::invalid_argument& er){
+        std::terminate();
+    }
+
+
+
     while ((std::cout << "> ") && (std::cin >> s)) {
-        if (s == "n") {
-            doc.CreateNew();
-            std::cout << "Created new document" << std::endl;
-        }
-        else if (s == "o") {
-            std::cin >> s;
-            fin.open(s, std::ios::in | std::ios::binary);
-            if (!fin.is_open()) {
-                std::cout << "No such file in directory" << std::endl;
-                fin.close();
-            }
-            else {
-                doc.LoadFromFile(fin);
-                std::cout << "Loaded document from " << s << std::endl;
-                fin.close();
-            }
-        }
-        else if (s == "s") {
-            std::cin >> s;
-            fout.open(s, std::ios::out | std::ios::binary | std::ios::trunc);
-            if (!fout.is_open()) {
-                std::cout << "Cannot open this file" << std::endl;
-            }
-            else {
-                doc.SaveToFile(fout);
-                std::cout << "Saved document to " << s << std::endl;
-                fout.close();
-            }
-        }
-        else if (s == "+") {
+        if (s == "+") {
             size_t pos;
             unsigned short type;
             std::cin >> pos >> type;
