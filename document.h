@@ -153,7 +153,7 @@ public:
         FiguresList.clear();
     }
 
-    auto getFigs(){
+    std::list< figure_pointer > getFigs(){
         return FiguresList;
     }
 

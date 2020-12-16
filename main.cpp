@@ -39,7 +39,7 @@
 int main(int argc, char* argv[]) {
     try{
         if(argc != 2){
-            throw std::invalid_argument("Too many arguments");
+            throw std::invalid_argument("Too many or too low arguments");
         }
     }
     catch (std::invalid_argument& er){
@@ -139,8 +139,10 @@ int main(int argc, char* argv[]) {
                 std::cout << '.' << std::flush;
                 std::this_thread::sleep_for(std::chrono::milliseconds(250));
             }
+            std::cout << std::endl;
             doc.Clear_list();
         }
     }
+    threadHandler.join();
     return 0;
 }

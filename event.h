@@ -13,7 +13,7 @@
 unsigned FILE_COUNT = 1;
 
 std::string str_gen(){
-    std::string result = "./log";
+    std::string result = "log";
     result += std::to_string(FILE_COUNT++);
     result += ".bin";
     return result;
@@ -45,16 +45,16 @@ struct Event_data{
 
 template<tempFigTYPE>
 struct Event_data_Printer: public Event_data{
-    const std::vector<std::shared_ptr<Figures FIGURE_TYPE>> figures;
+    const std::list<std::shared_ptr<Figures FIGURE_TYPE>> figures;
 
-    explicit Event_data_Printer(const std::vector<std::shared_ptr<Figures FIGURE_TYPE>>& _figures) : figures(_figures){}
+    explicit Event_data_Printer(std::list<std::shared_ptr<Figures FIGURE_TYPE>> _figures) : figures(_figures){}
 };
 
 template<tempFigTYPE>
 struct Event_data_Saver: public Event_data{
-    const std::vector<std::shared_ptr<Figures FIGURE_TYPE>> figures;
+    const std::list<std::shared_ptr<Figures FIGURE_TYPE>> figures;
 
-    explicit Event_data_Saver(const std::vector<std::shared_ptr<Figures FIGURE_TYPE>>& _figures) : figures(_figures){}
+    explicit Event_data_Saver(const std::list<std::shared_ptr<Figures FIGURE_TYPE>>& _figures) : figures(_figures){}
 };
 
 
