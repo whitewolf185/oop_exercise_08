@@ -49,5 +49,23 @@ public:
         events.push(_event);
     }
 
+    void operator()() {
+        while (!exit) {
+            if (!events.empty()) {
+                Event ev = events.front();
+                events.pop();
+
+                switch(ev.type) {
+                    case eventType::exit:
+                        exit = true;
+                        break;
+                    default:
+                        eventManager.notify(ev.type, ev);
+                }
+            } else {
+                std::this_thread::sleep_for(std::chrono::microseconds(10));
+            }
+        }
+    }
 };
 #endif //OOP_EXERCISE_08_EVENT_LOOP_H
