@@ -149,6 +149,13 @@ public:
         }
     }
 
+    void Clear_list(){
+        FiguresList.clear();
+    }
+
+    auto getFigs(){
+        return FiguresList;
+    }
 
     friend std::ostream & operator << (std::ostream & of, const TDocument<TYPES> & fact) {
         TDocument::const_iterator it = fact.FiguresList.begin();

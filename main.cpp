@@ -27,47 +27,44 @@
 Вариант: Прямоугольник, трапеция, ромб
 */
 
-#include "document.h"
+#include "event_loop.h"
 #include <exception>
 #include <functional>
 //нужно, чтобы было 2 одинаковых типа
 #define yourTYPE double , double
 #define figTYPE <double>
 
-auto print_lam = [](Figures figTYPE* fig){
-    std::cout << ;
-};
 
 
 int main(int argc, char* argv[]) {
-
-    std::vector<std::function<void()>> processing(2);
-
-    TDocument<yourTYPE> doc;
-
-
-    auto save_lam = [&](){
-
-    };
-
-    std::ofstream fout;
-    std::ifstream fin;
-
-    std::string s;
-
-    int size;
     try{
-        size = std::stoi(argv[1]);
-        if (size < 0){
-            throw std::invalid_argument("You entered wrong size");
+        if(argc != 2){
+            throw std::invalid_argument("Too many arguments");
         }
     }
-    catch(std::invalid_argument& er){
+    catch (std::invalid_argument& er){
         std::terminate();
     }
 
+    int buffer_size = std::stoi(argv[1]);
+    try{
+        if(buffer_size <= 0){
+            throw std::invalid_argument("buffer_size is less or equal than zero");
+        }
+    }
+    catch (std::invalid_argument& er){
+        std::terminate();
+    }
 
+    TDocument<yourTYPE> doc;
+    Event_loop figTYPE eventLoop;
+    std::shared_ptr<Handler figTYPE> handler_printer(new Handler_Printer figTYPE);
+    std::shared_ptr<Handler figTYPE> handler_saver(new Handler_Saver figTYPE);
+    eventLoop.addHandler(eventType::print, handler_printer);
+    eventLoop.addHandler(eventType::save, handler_saver);
 
+    std::thread threadHandler(std::ref(eventLoop));
+    std::string s;
     while ((std::cout << "> ") && (std::cin >> s)) {
         if (s == "+") {
             size_t pos;
@@ -88,9 +85,6 @@ int main(int argc, char* argv[]) {
             doc.Undo();
         }
         else if (s == "h") {
-            std::cout << "> \'n\' - create new document" << std::endl;
-            std::cout << "> \'o\' - open document" << std::endl;
-            std::cout << "> \'s\' - save document" << std::endl;
             std::cout << "> \'+\' - add a figure\n"
                          "when you add figure:\nfirst - enter your position you want insert your figure\n"
                          "second - enter figure ID:\n"
@@ -104,10 +98,48 @@ int main(int argc, char* argv[]) {
         }
 
         else if(s == "e"){
-            return 0;
+            Event figTYPE ev (eventType::exit,
+                              std::make_shared<Event_data>(),
+                              std::make_shared<Event_Response>(),
+                              [](auto){});
+            eventLoop.addEvent(ev);
+            break;
         }
         else {
             std::cout << "Unknown command. Type \'h\' to show help" << std::endl;
+        }
+
+        bool printer_done = false;
+        bool save_done = false;
+        if(doc.getFigs().size() >= buffer_size){
+            auto do_lam_ev1 = [](const std::shared_ptr<Event_Response>& response){
+                if(auto ptr = std::static_pointer_cast<Event_Response_Printer>(response)){
+                    ptr->done = true;
+                }
+            };
+            auto do_lam_ev2 = [](const std::shared_ptr<Event_Response>& response){
+                if(auto ptr = std::static_pointer_cast<Event_Response_Saver>(response)){
+                    ptr->done = true;
+                }
+            };
+
+
+            Event figTYPE ev1(eventType::print,
+                              std::make_shared<Event_data_Printer figTYPE>(doc.getFigs()),
+                              std::make_shared<Event_Response_Printer>(printer_done),
+                              do_lam_ev1);
+            Event figTYPE ev2(eventType::save,
+                              std::make_shared<Event_data_Saver figTYPE>(doc.getFigs()),
+                              std::make_shared<Event_Response_Saver>(save_done),
+                              do_lam_ev2);
+
+            eventLoop.addEvent(ev1);
+            eventLoop.addEvent(ev2);
+            while(!printer_done && !save_done){
+                std::cout << '.' << std::flush;
+                std::this_thread::sleep_for(std::chrono::milliseconds(250));
+            }
+            doc.Clear_list();
         }
     }
     return 0;
