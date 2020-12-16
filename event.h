@@ -16,6 +16,7 @@ std::string str_gen(){
     std::string result = "./log";
     result += std::to_string(FILE_COUNT++);
     result += ".bin";
+    return result;
 }
 
 enum class eventType{
