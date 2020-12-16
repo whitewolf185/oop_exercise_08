@@ -16,7 +16,6 @@ std::string str_gen(){
     std::string result = "log";
     result += std::to_string(FILE_COUNT++);
     result += ".bin";
-    return result;
 }
 
 enum class eventType{
@@ -45,18 +44,16 @@ struct Event_data{
 
 template<tempFigTYPE>
 struct Event_data_Printer: public Event_data{
-    std::vector<std::shared_ptr<Figures FIGURE_TYPE>> figures;
-    
-    explicit Event_data_Printer(
-            std::allocator<std::shared_ptr<Figures FIGURE_TYPE>> _figures) : figures(_figures){}
+    const std::vector<std::shared_ptr<Figures FIGURE_TYPE>> figures;
+
+    explicit Event_data_Printer(const std::vector<std::shared_ptr<Figures FIGURE_TYPE>>& _figures) : figures(_figures){}
 };
 
 template<tempFigTYPE>
 struct Event_data_Saver: public Event_data{
-    std::vector<std::shared_ptr<Figures FIGURE_TYPE>> figures;
+    const std::vector<std::shared_ptr<Figures FIGURE_TYPE>> figures;
 
-    explicit Event_data_Saver(
-            std::allocator<std::shared_ptr<Figures FIGURE_TYPE>> _figures) : figures(_figures){}
+    explicit Event_data_Saver(const std::vector<std::shared_ptr<Figures FIGURE_TYPE>>& _figures) : figures(_figures){}
 };
 
 
@@ -91,7 +88,7 @@ struct Handler_Printer: public Handler FIGURE_TYPE {
         if(!data){
             return false;
         }
-        
+
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         for (auto& fig : data->figures) {
             fig->Print(std::cout);
@@ -103,7 +100,7 @@ struct Handler_Printer: public Handler FIGURE_TYPE {
 
 template<tempFigTYPE>
 struct Handler_Saver: public Handler FIGURE_TYPE {
-    bool do_event(Event FIGURE_TYPE & event) override{
+    bool do_event(Event FIGURE_TYPE& event) override{
         std::ofstream fout;
         fout.open(str_gen(), std::ios_base::out);
         auto data = std::static_pointer_cast<Event_data_Saver FIGURE_TYPE>(event.data);

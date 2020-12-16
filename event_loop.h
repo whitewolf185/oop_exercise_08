@@ -35,7 +35,7 @@ template <tempFigTYPE>
 class Event_loop{
 private:
     bool exit = false;
-    std::queue<Event FIGURE_TYPE> events{};
+    std::queue<Event FIGURE_TYPE> events;
     Event_Manager FIGURE_TYPE eventManager;
     std::mutex wait;
 
@@ -49,24 +49,5 @@ public:
         events.push(_event);
     }
 
-    void operator()(){
-        while(!exit){
-            if(!events.empty()){
-                Event FIGURE_TYPE ev = events.front();
-                events.pop();
-
-                switch(ev.type){
-                    case eventType::exit:
-                        exit = true;
-                        break;
-                    default:
-                        eventManager.notify(ev.type,ev);
-                }
-            }
-            else{
-                std::this_thread::sleep_for(std::chrono::microseconds(10));
-            }
-        }
-    }
 };
 #endif //OOP_EXERCISE_08_EVENT_LOOP_H
