@@ -1,0 +1,4 @@
+terminate called after throwing an instance of 'std::invalid_argument'
+  what():  buffer_size is less or equal than zero
+
+Process finished with exit code 3
