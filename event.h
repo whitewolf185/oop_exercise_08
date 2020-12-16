@@ -15,7 +15,7 @@ unsigned FILE_COUNT = 1;
 std::string str_gen(){
     std::string result = "log";
     result += std::to_string(FILE_COUNT++);
-    result += ".bin";
+    result += ".txt";
     return result;
 }
 
