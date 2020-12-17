@@ -137,9 +137,8 @@ int main(int argc, char* argv[]) {
             eventLoop.addEvent(ev2);
             while(!printer_done && !save_done){
                 std::cout << '.' << std::flush;
-                std::this_thread::sleep_for(std::chrono::milliseconds(250));
+                std::this_thread::sleep_for(std::chrono::milliseconds(125));
             }
-            std::cout << std::endl;
             doc.Clear_list();
         }
     }

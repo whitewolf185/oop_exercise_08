@@ -33,11 +33,11 @@ public:
 
     template<class U>
     friend std::ostream& operator<<(std::ostream& out, const Rhombus<U,U>& rhombus){
-        out << "Rhombus vertices: [ "
+        out << std::endl << "Rhombus vertices: [ "
             << std::pair<U,U> (rhombus.point.first, rhombus.point.second) << ", "
             << std::pair<U,U> (rhombus.point.first + rhombus.D1 / 2, rhombus.point.second + rhombus.D2 / 2) << ", "
             << std::pair<U,U> (rhombus.point.first + rhombus.D1, rhombus.point.second) << ", "
-            << std::pair<U,U> (rhombus.point.first - rhombus.D1 / 2, rhombus.point.second - rhombus.D2 / 2) << " ]" << std::endl;
+            << std::pair<U,U> (rhombus.point.first - rhombus.D1 / 2, rhombus.point.second - rhombus.D2 / 2) << " ]";
 
         return out;
     }

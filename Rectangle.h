@@ -33,12 +33,12 @@ public:
 
     template<class U>
     friend std::ostream & operator << (std::ostream & out, const Rectangle<U,U> & rectangle){
-        out << "Rectangle vertices: [";
+        out << std::endl <<  "Rectangle vertices: [";
         out << std::pair<U,U> (rectangle.point.first, rectangle.point.second) << ", ";
         out << std::pair<U,U> (rectangle.point.first, rectangle.point.second + rectangle.B) << ", ";
         out << std::pair<U,U> (rectangle.point.first + rectangle.A, rectangle.point.second + rectangle.B) << ", ";
         out << std::pair<U,U> (rectangle.point.first + rectangle.A, rectangle.point.second);
-        out << "]";
+        out << "]" ;
         return out;
     }
 };

@@ -39,7 +39,7 @@ public:
     operator<<(std::ostream &out, const Trapeze<U,U> &trapeze) {
         Tside diff = (trapeze.A - trapeze.B) / 2.0;
         double height = std::sqrt(fabs(trapeze.C * trapeze.C - diff * diff));
-        out << "Trapeze vertices: [";
+        out << std::endl << "Trapeze vertices: [";
         out << std::pair<U,U> (trapeze.point.first, trapeze.point.second) << ", ";
         out << std::pair<U,U> (trapeze.point.first + diff, trapeze.point.second + height) << ", ";
         out << std::pair<U,U> (trapeze.point.first + trapeze.A - diff, trapeze.point.second + height) << ", ";
@@ -51,7 +51,7 @@ public:
     template<class U>
     friend typename std::enable_if<is_int<U,U>::value, std::ostream &>::type
     operator<<(std::ostream &out, const Trapeze<U,U> &trapeze) {
-        out << "Trapeze: [ I cant calculate coordinates, because the type is int ]" << std::endl;
+        out << std::endl << "Trapeze: [ I cant calculate coordinates, because the type is int ]";
         return out;
     }
 };
